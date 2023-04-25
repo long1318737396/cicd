@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: go-cache-test
+  name: go-cache-test
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: go-cache-test
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: go-cache-test
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - topologyKey: "kubernetes.io/hostname"
+            labelSelector:
+              matchExpressions:
+              - key: "app"
+                operator: In
+                values:
+                - go-cache-test
+      containers:
+      - image: ${IMAGE} 
+        name: golang
+        resources: {}
+status: {}
